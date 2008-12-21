@@ -1,0 +1,12 @@
+---
+layout: post
+title: Back from the Dead
+---
+
+h1. {{ page.title }}
+
+p(meta). 21 Dec 2008 - Point Clare
+
+A little over two years ago I lost the momentum to keep blogging. A little over one year ago I switched DNS providers for teamaskins.net, and neglected to even point it at the server hosting my blog. With the advent of "Jekyll":http://github.com/mojombo/jekyll/ and "github pages":http://github.com/blog/272-github-pages though, I'm keen to give this another shot. The github:"http://github.com" crew have delivered, and keep delivering elegant, simple, yet sophisticated products that make it difficult to *not* enjoy hacking and publishing.
+
+So here I am again, back from the dead. Please do come along for the ride.

@@ -1,0 +1,12 @@
+h1. benaskins.github.com
+
+This is the source for benaskins.github.com. Concept, inspiration, and implementation taken entirely from "mojombo's tpw":http://http://github.com/benaskins/tpw
+
+"Jekyll Powered":http://github.com/mojombo/jekyll
+
+h1. License
+
+The following directories and their contents are Copyright Ben Askins. You may not reuse anything therein without my permission:
+
+* _posts/
+* images/
