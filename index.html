@@ -238,7 +238,13 @@
   var card = document.getElementById('card');
   var hint = document.getElementById('hint');
   var html = document.documentElement;
-  var flipped = false;
+  var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+  var flipped = prefersDark;
+
+  if (prefersDark) {
+    html.classList.add('dark');
+    card.classList.add('flipped');
+  }
 
   document.body.addEventListener('click', function() {
     flipped = !flipped;
@@ -246,10 +252,6 @@
     hint.classList.add('hidden');
     html.classList.toggle('dark', flipped);
   });
-
-  if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
-    html.classList.add('dark');
-  }
 })();
 </script>
 
