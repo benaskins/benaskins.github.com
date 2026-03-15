@@ -10,23 +10,35 @@
   * { margin: 0; padding: 0; box-sizing: border-box; }
 
   :root {
+    --bg: #E8E4DF;
     --ink: #1C1917;
-    --cream: #FAF9F7;
-    --rule: #E7E5E4;
+    --card: #FAFAF9;
+    --rule: #E0DDD9;
     --muted: #A8A29E;
     --mid: #78716C;
+    --shadow-1: rgba(0, 0, 0, 0.08);
+    --shadow-2: rgba(0, 0, 0, 0.15);
+    --shadow-3: rgba(0, 0, 0, 0.04);
+    --edge-light: rgba(255, 255, 255, 0.7);
+    --edge-dark: rgba(0, 0, 0, 0.06);
   }
 
   .dark {
-    --ink: #FAF9F7;
-    --cream: #1C1917;
-    --rule: #2E2A27;
-    --muted: #A8A29E;
-    --mid: #D6D3D1;
+    --bg: #1A1816;
+    --ink: #F5F4F2;
+    --card: #272420;
+    --rule: #3A3632;
+    --muted: #8A8580;
+    --mid: #B8B3AE;
+    --shadow-1: rgba(0, 0, 0, 0.3);
+    --shadow-2: rgba(0, 0, 0, 0.5);
+    --shadow-3: rgba(0, 0, 0, 0.2);
+    --edge-light: rgba(255, 255, 255, 0.06);
+    --edge-dark: rgba(0, 0, 0, 0.3);
   }
 
   body {
-    background: var(--cream);
+    background: var(--bg);
     color: var(--ink);
     font-family: 'DM Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
     min-height: 100dvh;
@@ -40,10 +52,10 @@
   }
 
   .card {
-    width: 400px;
+    width: 420px;
     max-width: calc(100vw - 48px);
-    aspect-ratio: 1.75;
-    perspective: 1000px;
+    aspect-ratio: 1.7;
+    perspective: 1200px;
   }
 
   .card-inner {
@@ -51,7 +63,7 @@
     height: 100%;
     position: relative;
     transform-style: preserve-3d;
-    transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: transform 0.9s cubic-bezier(0.4, 0, 0.15, 1);
   }
 
   .card-inner.flipped {
@@ -63,19 +75,47 @@
     width: 100%;
     height: 100%;
     backface-visibility: hidden;
-    border: 1px solid var(--rule);
-    border-radius: 4px;
+    border-radius: 8px;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     gap: 12px;
-    padding: 32px;
-    transition: border-color 0.7s ease;
+    padding: 36px;
+
+    /* Card stock surface */
+    background: var(--card);
+
+    /* Layered shadow for physical depth */
+    box-shadow:
+      /* Contact shadow — tight and dark */
+      0 1px 2px var(--shadow-1),
+      /* Lift shadow — medium spread */
+      0 4px 8px var(--shadow-1),
+      /* Ambient shadow — soft, wide */
+      0 12px 32px var(--shadow-2),
+      /* Surface shadow on desk */
+      0 24px 48px -12px var(--shadow-3),
+      /* Top edge highlight — simulates overhead light */
+      inset 0 1px 0 var(--edge-light),
+      /* Bottom edge — subtle darkening */
+      inset 0 -1px 0 var(--edge-dark);
+
+    transition: background 0.7s ease, box-shadow 0.7s ease;
   }
 
   .card-back {
     transform: rotateY(180deg);
+  }
+
+  /* Subtle texture overlay */
+  .card-face::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 8px;
+    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='4'%3E%3Crect width='4' height='4' fill='%23000' opacity='0.015'/%3E%3Crect x='1' y='1' width='1' height='1' fill='%23fff' opacity='0.02'/%3E%3C/svg%3E");
+    pointer-events: none;
   }
 
   .name {
@@ -85,23 +125,24 @@
   }
 
   .role {
-    font-size: 12px;
+    font-size: 11px;
     font-weight: 400;
     color: var(--muted);
-    letter-spacing: 0.08em;
+    letter-spacing: 0.1em;
     text-transform: uppercase;
     transition: color 0.7s ease;
   }
 
   .divider {
-    width: 32px;
+    width: 28px;
     height: 1px;
     background: var(--rule);
+    margin: 4px 0;
     transition: background 0.7s ease;
   }
 
   .link {
-    font-size: 14px;
+    font-size: 13px;
     font-weight: 400;
     color: var(--mid);
     text-decoration: none;
@@ -120,10 +161,10 @@
   }
 
   .tagline {
-    font-size: 12px;
+    font-size: 11px;
     font-weight: 400;
     color: var(--muted);
-    letter-spacing: 0.06em;
+    letter-spacing: 0.08em;
     text-transform: uppercase;
     transition: color 0.7s ease;
   }
@@ -132,8 +173,8 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 6px;
-    margin-top: 4px;
+    gap: 5px;
+    margin-top: 2px;
   }
 
   .sites a {
@@ -151,12 +192,12 @@
 
   .hint {
     position: fixed;
-    bottom: 24px;
+    bottom: 28px;
     font-size: 11px;
     color: var(--muted);
-    letter-spacing: 0.04em;
+    letter-spacing: 0.06em;
     opacity: 1;
-    transition: opacity 0.5s ease, color 0.7s ease;
+    transition: opacity 0.6s ease, color 0.7s ease;
   }
 
   .hint.hidden {
@@ -199,17 +240,13 @@
   var html = document.documentElement;
   var flipped = false;
 
-  // Flip card on click anywhere
   document.body.addEventListener('click', function() {
     flipped = !flipped;
     card.classList.toggle('flipped', flipped);
     hint.classList.add('hidden');
-
-    // Toggle light/dark on each flip
     html.classList.toggle('dark', flipped);
   });
 
-  // Respect system preference on load
   if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
     html.classList.add('dark');
   }
