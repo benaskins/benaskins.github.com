@@ -1,88 +1,220 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html>
-  <head>
-    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.2.6/jquery.min.js"></script>
-    <script type="text/javascript">
-          $(function() {
-            var limit = 4           // how many repos to list
-            var login = 'benaskins' // your username
-            $.getJSON('http://github.com/api/v1/json/' + login + '?callback=?', function(data) {
-              var repos = $.grep(data.user.repositories, function() {
-                return !this.fork
-              })
-              repos.sort(function(a, b) {
-                return b.watchers - a.watchers
-              })
-              $.each(repos.slice(0, limit), function() {
-                $('#repos').append('<li class="repo"><a href="' + this.url + '">&nbsp;- ' + this.name + '</a></li>')
-              })
-            })        
-          })
-        </script>
-    <style type="text/css">
-      * {
-      margin:0;
-      padding:0;
-      }
-      body {
-      background: #99ad72 url(shoes.jpg) no-repeat scroll center;
-      background-attachment: fixed;
-      }
-      ul {
-      left:10%;
-      list-style-type:none;
-      position:absolute;
-      top:60%;
-      }
-      #repos {
-      top:12%;
-      }
-      #genlevel {
-      top: 10%;
-      left: 75%;
-      }
-      a {
-        background: #000;
-        padding: 5px;
-        color:#fff;
-        font-family:Courier;
-        line-height:22px;
-        margin: 5px;
-        display: inline-block;
-        text-decoration: none;
-      }
-      a:hover {
-        background: yellow;
-        color: #000;
-      }
-      h3 {
-      font-family:Helvetica;
-      font-size: 30px;
-      }
-      li.repo {
-        margin-left: 20px;
-      }
-    </style>
-  </head>
-  <body>
-    <ul id=repos>
-      <li><h3>on github...</h3></li>
-      <li><a href="http://github.com/benaskins">github.com/benaskins</a></li>
-    </ul>
-    <ul>
-      <li><h3>elsewhere...</h3></li>
-      <li><a href="http://twitter.com/benaskins">twitter.com/benaskins</a></li>
-      <li><a href="http://flickr.com/photos/teamaskins">flickr.com/photos/teamaskins</a></li>
-      <li><a href="http://www.last.fm/user/benj72">last.fm/user/benj72</a></li>
-      <li><a href="mailto:ben.askins@gmail.com">ben.askins@gmail.com</a></li>
-    </ul>
-    <ul id="genlevel">
-      <li><h3>i write music...</h3></li>
-      <li><a href="http://soundcloud.com/genlevel">soundcloud.com/genlevel</a></li>      
-      <li><a href="http://www.last.fm/music/Genlevel">last.fm/music/genlevel</a></li>
-    </ul>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Ben Askins</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&display=swap');
 
+  * { margin: 0; padding: 0; box-sizing: border-box; }
 
-  </body>
+  :root {
+    --ink: #1C1917;
+    --cream: #FAF9F7;
+    --rule: #E7E5E4;
+    --muted: #A8A29E;
+    --mid: #78716C;
+  }
+
+  .dark {
+    --ink: #FAF9F7;
+    --cream: #1C1917;
+    --rule: #2E2A27;
+    --muted: #A8A29E;
+    --mid: #D6D3D1;
+  }
+
+  body {
+    background: var(--cream);
+    color: var(--ink);
+    font-family: 'DM Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    min-height: 100dvh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.7s ease, color 0.7s ease;
+    -webkit-tap-highlight-color: transparent;
+    cursor: pointer;
+    user-select: none;
+  }
+
+  .card {
+    width: 400px;
+    max-width: calc(100vw - 48px);
+    aspect-ratio: 1.75;
+    perspective: 1000px;
+  }
+
+  .card-inner {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    transform-style: preserve-3d;
+    transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .card-inner.flipped {
+    transform: rotateY(180deg);
+  }
+
+  .card-face {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;
+    border: 1px solid var(--rule);
+    border-radius: 4px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    padding: 32px;
+    transition: border-color 0.7s ease;
+  }
+
+  .card-back {
+    transform: rotateY(180deg);
+  }
+
+  .name {
+    font-size: 22px;
+    font-weight: 500;
+    letter-spacing: -0.02em;
+  }
+
+  .role {
+    font-size: 12px;
+    font-weight: 400;
+    color: var(--muted);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    transition: color 0.7s ease;
+  }
+
+  .divider {
+    width: 32px;
+    height: 1px;
+    background: var(--rule);
+    transition: background 0.7s ease;
+  }
+
+  .link {
+    font-size: 14px;
+    font-weight: 400;
+    color: var(--mid);
+    text-decoration: none;
+    letter-spacing: 0.01em;
+    transition: color 0.3s ease;
+  }
+
+  .link:hover {
+    color: var(--ink);
+  }
+
+  .label {
+    font-size: 22px;
+    font-weight: 600;
+    letter-spacing: -0.03em;
+  }
+
+  .tagline {
+    font-size: 12px;
+    font-weight: 400;
+    color: var(--muted);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    transition: color 0.7s ease;
+  }
+
+  .sites {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    margin-top: 4px;
+  }
+
+  .sites a {
+    font-size: 13px;
+    font-weight: 400;
+    color: var(--mid);
+    text-decoration: none;
+    letter-spacing: 0.02em;
+    transition: color 0.3s ease;
+  }
+
+  .sites a:hover {
+    color: var(--ink);
+  }
+
+  .hint {
+    position: fixed;
+    bottom: 24px;
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 0.04em;
+    opacity: 1;
+    transition: opacity 0.5s ease, color 0.7s ease;
+  }
+
+  .hint.hidden {
+    opacity: 0;
+  }
+</style>
+</head>
+<body>
+
+<div class="card">
+  <div class="card-inner" id="card">
+    <!-- Front: personal -->
+    <div class="card-face card-front">
+      <span class="name">Benjamin Askins</span>
+      <span class="role">Software Engineer</span>
+      <div class="divider"></div>
+      <a class="link" href="https://benjaminaskins.com" onclick="event.stopPropagation()">benjaminaskins.com</a>
+    </div>
+
+    <!-- Back: genlevel -->
+    <div class="card-face card-back">
+      <span class="label">genlevel</span>
+      <span class="tagline">Generative Music &middot; Software</span>
+      <div class="divider"></div>
+      <div class="sites">
+        <a href="https://genlevel.com" onclick="event.stopPropagation()">genlevel.com</a>
+        <a href="https://generativeplane.com" onclick="event.stopPropagation()">generativeplane.com</a>
+        <a href="https://musicbox.genlevel.com" onclick="event.stopPropagation()">musicbox</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<span class="hint" id="hint">click to flip</span>
+
+<script>
+(function() {
+  var card = document.getElementById('card');
+  var hint = document.getElementById('hint');
+  var html = document.documentElement;
+  var flipped = false;
+
+  // Flip card on click anywhere
+  document.body.addEventListener('click', function() {
+    flipped = !flipped;
+    card.classList.toggle('flipped', flipped);
+    hint.classList.add('hidden');
+
+    // Toggle light/dark on each flip
+    html.classList.toggle('dark', flipped);
+  });
+
+  // Respect system preference on load
+  if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+    html.classList.add('dark');
+  }
+})();
+</script>
+
+</body>
 </html>
